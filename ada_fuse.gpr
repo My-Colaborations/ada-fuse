@@ -1,4 +1,3 @@
-with "libfuse";
 project Ada_Fuse is
 
     type System_Type is ("Linux_x86_64", "Linux_i686", "Darwin_i386", "Darwin_x86_64");

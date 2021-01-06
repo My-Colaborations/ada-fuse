@@ -1,5 +1,5 @@
 with Ada.Command_Line;
-
+with Fuse.Libfuse;
 package body Fuse is
 
    function Get_Arguments return Arguments_Type

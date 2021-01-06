@@ -17,9 +17,9 @@ ifeq ($(ADA_FUSE_SYSTEM),Darwin_x86_64)
 	SYS_DIR=system/macos
 endif
 
-libfuse.gpr:
+src/fuse-libfuse.ads:setup
 	./setup
-all:libfuse.gpr
+all:src/fuse-libfuse.ads
 	gprbuild -p -f -Pada_fuse
 
 clean:libfuse.gpr
@@ -32,7 +32,8 @@ prefix ?= $(shell which gprbuild 2> /dev/null | sed -e 's/\/bin\/gprbuild.*//')
 
 install: lib/libada_fuse.a libfuse.gpr
 	gprinstall -p -Pada_fuse --prefix=$(prefix)
-
+	cp   libfuse.gpr $(prefix)/share/gpr
+	
 uninstall:
 	gprinstall -Pada_fuse --prefix=$(prefix) --uninstall
 

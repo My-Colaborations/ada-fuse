@@ -2,12 +2,10 @@
 import subprocess
 from os.path import *
 import shutil
-
-TEMPLATE="""abstract project Libfuse is
-   package Linker is
-      for Linker_Options use (%(libs)s);
-   end Linker;
-end Libfuse;"""
+OPTION="""   pragma Linker_Options ("%(name)s");"""
+TEMPLATE="""private package Fuse.Libfuse is
+%(options)s
+end fuse.Libfuse;"""
 
 make_dir = dirname(shutil.which("make"))
 pkg_config_dir = dirname(shutil.which("pkg-config"))
@@ -16,9 +14,9 @@ if gprbuild_dir == make_dir:
     pkg_config = "pkg-config"
 else:
     pkg_config = join(make_dir,"pkg-config")
-libs=[]
+options=[]
 for i in subprocess.check_output([pkg_config,"--libs","fuse"]).decode("utf-8").strip().split():
-    libs.append('"%s"' % i)
+    options.append(OPTION % {"name":i})
     
-with open("libfuse.gpr","w") as outf:
-    outf.write (TEMPLATE % {"libs":",".join(libs)})
+with open("src/fuse-libfuse.ads","w") as outf:
+    outf.write (TEMPLATE % {"options":"\n".join(options)})
